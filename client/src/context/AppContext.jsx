@@ -3,7 +3,7 @@ import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
-const configuredBaseURL = import.meta.env.VITE_BASE_URL?.trim()
+const configuredBaseURL = import.meta.env.VITE_API_URL?.trim() || import.meta.env.VITE_BASE_URL?.trim()
 
 axios.defaults.baseURL = configuredBaseURL || "http://localhost:3000"
 
