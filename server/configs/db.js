@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const DEFAULT_LOCAL_MONGO_URI = "mongodb://127.0.0.1:27017/car-rental";
+let connectedLogRegistered = false;
 
 const connectWithUri = async (mongoUri) => {
     const connectionString = new URL(mongoUri);
@@ -9,7 +10,10 @@ const connectWithUri = async (mongoUri) => {
         connectionString.pathname = "/car-rental";
     }
 
-    mongoose.connection.once('connected', ()=> console.log("Database Connected"));
+    if (!connectedLogRegistered) {
+        connectedLogRegistered = true;
+        mongoose.connection.once('connected', ()=> console.log("Database Connected"));
+    }
 
     await mongoose.connect(connectionString.toString(), {
         serverSelectionTimeoutMS: 10000,
