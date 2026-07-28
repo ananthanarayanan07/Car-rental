@@ -9,9 +9,6 @@ import bookingRouter from "./routes/bookingRoutes.js";
 // Initialize Express App
 const app = express()
 
-// Connect Database
-await connectDB()
-
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -23,3 +20,9 @@ app.use('/api/bookings', bookingRouter)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`))
+
+// Connect Database after the HTTP server is up so a transient DB outage
+// does not prevent the app from starting.
+connectDB().catch((error)=> {
+	console.error("Database connection failed:", error.message)
+})
